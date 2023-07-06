@@ -1,0 +1,23 @@
+材料データ追加ページ
+
+<%= form_with(model: @material_num, local: true) do |f| %>
+
+<%= render 'shared/error_messages', model: f.object %>
+
+
+    <div class="field">
+      <%= f.label "管理番号" %>
+      <%= f.text_field :product_number %>
+    </div>
+
+    <div class="field">
+      <%= f.label "製品名" %>
+      <%= f.text_field :name %>
+    </div>
+
+  <div class="actions">
+    <%= f.submit "材料登録！" %>
+  </div>
+
+
+<% end %>

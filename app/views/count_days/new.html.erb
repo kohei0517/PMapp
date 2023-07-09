@@ -1,0 +1,19 @@
+棚卸し情報登録ページ
+
+<%= form_with(model:@count_day, local: true) do |f|%>
+
+<%= render 'shared/error_messages', model: f.object %>
+
+
+    <div class="field">
+      <%= f.label "棚卸し日" %>
+      <%= f.date_field :inventory_day %>
+    </div>
+
+    <%= f.hidden_field :inventory_finish, value:  0 %>
+
+  <div class="actions">
+    <%= f.submit "棚卸し日を登録！" %>
+  </div>
+
+<% end %>

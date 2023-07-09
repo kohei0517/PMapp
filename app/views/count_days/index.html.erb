@@ -1,0 +1,14 @@
+始まりのページ
+<div>
+  <%= link_to '登録されている管理番号の確認、新規登録、変更、修正はこちら',material_nums_path %>
+</div>
+<div>
+  <%= link_to '棚卸し日の登録はこちら',new_count_day_path %>
+</div>
+
+<% @count_days.each do |count| %>
+  <%= link_to "棚卸し日詳細:#{count.inventory_day}", count_day_path(count.id) %> <%= link_to "編集", edit_count_day_path(count.id) %> <%= link_to "削除", count_day_path(count.id) ,method: :delete, data: {confirm: "削除しますか？"} %>
+ <br>
+<% end %>
+
+

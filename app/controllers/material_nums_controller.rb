@@ -1,6 +1,8 @@
 class MaterialNumsController < ApplicationController
-  before_action :authenticate_user!
+
   def index
+    @material_num = MaterialNum.all
+    @product_num = ProductNum.all
   end
 
   def new

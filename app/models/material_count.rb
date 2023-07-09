@@ -1,0 +1,2 @@
+class MaterialCount < ApplicationRecord
+end

@@ -1,4 +1,6 @@
 class CountDay < ApplicationRecord
+  has_many :material_counts, dependent: :destroy
+  has_many :product_counts, dependent: :destroy
   validates :inventory_day, presence: true
   validates :inventory_finish, presence: true
   validate  :check_unique_month, unless: :updating?

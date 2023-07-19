@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   root to: 'count_days#index'
   resources :material_nums, only: [:index, :new, :create]
   resources :product_nums,  only: [:new, :create]
-  resources :count_days, only:[:index, :new, :create, :show, :edit, :update, :destroy]
+  resources :count_days, only:[:index, :new, :create, :show, :edit, :update, :destroy] do
+    resources :material_counts, only:[:new, :create]
+    resources :product_counts, only:[:new, :create]
+  end
 
 end

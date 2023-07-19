@@ -1,0 +1,26 @@
+棚卸し材料新規追加ページ
+
+
+
+  <% @material_num.each do |material| %>
+    <%= form_with(model: [@count_day, @material_count], local: true) do |f| %>
+      <%= render 'shared/error_messages', model: f.object %>
+
+    <%= f.label :material_num_id, "管理番号:#{material.name}" %> 
+    <%= f.text_field :material_num_id, required: true, value: material.id %> 
+
+    <%= f.label :count, '数量:' %> 
+    <% if @material_counts.where(material_num_id: material.id).exists? %>
+      <%= f.text_field :count, value: @material_counts.find(material.id).count %> 
+    <% else %>
+      <%= f.text_field :count %> 
+    <% end %>
+
+  <%= f.submit %> 
+
+    <br>
+
+  <% end %>
+
+
+<% end %>

@@ -1,7 +1,31 @@
-始まりのページ
-<div>
+品番確認ページ
+<div class = "jump_material_up">
   <%= link_to '材料新規番号登録ページ',new_material_num_path %>
 </div>
-<div>
+<div class = "jump_product_up" >
   <%= link_to '製品新規番号登録ページ',new_product_num_path %>
+</div>
+<br><br><br>
+<div>
+材料情報
+</div>
+<div class = "material_data">
+  <% @material_num.each do |material| %>
+    "製品名" <%= material.name %>
+    "管理番号" <%= material.product_number %>
+    <br>
+  <% end %>
+</div>
+<br><br><br>
+<div>
+完成品情報
+</div>
+<div class = "product_data">
+  <% @product_num.each do |product| %>
+    "製品名" <%= product.name %>
+    "管理番号" <%= product.product_number %>
+    "親品番個数" <%= product.material_count %>
+    "親品番製品名" <%= product.material_num.name%>
+    <br>
+  <% end %>
 </div>

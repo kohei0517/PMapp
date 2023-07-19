@@ -1,0 +1,24 @@
+棚卸し製品新規追加ページ
+
+  <% @product_num.each do |product| %>
+    <%= form_with(model: [@count_day, @product_count], local: true) do |f| %>
+      <%= render 'shared/error_messages', model: f.object %>
+
+    <%= f.label :product_num_id, "管理番号:#{product.name}" %> 
+    <%= f.text_field :product_num_id, required: true, value: product.id %> 
+
+    <%= f.label :count, '数量:' %> 
+    <% if @product_counts.where(product_num_id: product.id).exists? %>
+      <%= f.text_field :count, value: @product_counts.find(product.id).count %>
+    <% else %>
+      <%= f.text_field :count %> 
+    <% end %>
+
+  <%= f.submit %> 
+
+    <br>
+
+  <% end %>
+
+
+<% end %>

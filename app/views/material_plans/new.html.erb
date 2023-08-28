@@ -1,0 +1,30 @@
+材料発注計画追加ページ
+
+<% if @alert_message %>
+  <div class="alert alert-warning">
+    <%= @alert_message %>
+  </div>
+<% end %>
+<%= form_with(model: [@count_day,@material_plan],local: true) do |form| %>
+
+<%= render 'shared/error_messages', model: form.object %>
+
+    <div class="field">
+      <%= form.label "親製品管理番号" %>
+      <%= form.text_field :material_nums %>
+    </div>
+
+    <div class="field">
+      <%= form.label "発注個数(本数)" %>
+      <%= form.text_field :count %>
+    </div>
+
+    <div class="field">
+      <%= form.label "購入予定日" %>
+      <%= form.date_field :buy_day %>
+    </div>
+
+  <div class="actions">
+    <%= form.submit "製品登録！" %>
+  </div>
+<% end %>

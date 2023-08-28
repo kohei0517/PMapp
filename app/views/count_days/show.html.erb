@@ -5,6 +5,16 @@
 <div>
   <%= link_to "製品棚卸し登録", new_count_day_product_count_path(@count_day.id) %>
 </div>
+</div>
+<div>
+  <%= link_to "材料発注計画登録", new_count_day_material_plan_path(@count_day.id) %>
+</div>
+<div>
+  <%= link_to "製品生産計画登録", new_count_day_product_plan_path(@count_day.id) %>
+</div>
+<div>
+  <%= link_to "到着材料の登録", new_count_day_material_buy_path(@count_day.id) %>
+</div>
 <div>
   <%= @count_day.inventory_day %>
 </div>

@@ -1,0 +1,30 @@
+材料購入到着ページ
+
+<% if @alert_message %>
+  <div class="alert alert-warning">
+    <%= @alert_message %>
+  </div>
+<% end %>
+<%= form_with(model: [@count_day,@material_buy],local: true) do |form| %>
+
+<%= render 'shared/error_messages', model: form.object %>
+
+    <div class="field">
+      <%= form.label "管理番号" %>
+      <%= form.text_field :material_nums %>
+    </div>
+
+    <div class="field">
+      <%= form.label "到着個数(本数)" %>
+      <%= form.text_field :count %>
+    </div>
+
+    <div class="field">
+      <%= form.label "到着日" %>
+      <%= form.date_field :buy_day %>
+    </div>
+
+  <div class="actions">
+    <%= form.submit "製品登録！" %>
+  </div>
+<% end %>

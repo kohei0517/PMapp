@@ -10,13 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_19_105336) do
+ActiveRecord::Schema.define(version: 2023_08_22_120607) do
 
   create_table "count_days", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.date "inventory_day"
     t.integer "inventory_finish"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "material_buys", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.date "buy_day", null: false
+    t.integer "count", null: false
+    t.bigint "count_day_id", null: false
+    t.bigint "material_num_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["count_day_id"], name: "index_material_buys_on_count_day_id"
+    t.index ["material_num_id"], name: "index_material_buys_on_material_num_id"
   end
 
   create_table "material_counts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -34,6 +45,17 @@ ActiveRecord::Schema.define(version: 2023_07_19_105336) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "material_plans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.date "buy_day", null: false
+    t.integer "count", null: false
+    t.bigint "count_day_id", null: false
+    t.bigint "material_num_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["count_day_id"], name: "index_material_plans_on_count_day_id"
+    t.index ["material_num_id"], name: "index_material_plans_on_material_num_id"
   end
 
   create_table "product_counts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -56,6 +78,17 @@ ActiveRecord::Schema.define(version: 2023_07_19_105336) do
     t.index ["material_num_id"], name: "index_product_nums_on_material_num_id"
   end
 
+  create_table "product_plans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.date "product_day", null: false
+    t.integer "count", null: false
+    t.bigint "count_day_id", null: false
+    t.bigint "product_num_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["count_day_id"], name: "index_product_plans_on_count_day_id"
+    t.index ["product_num_id"], name: "index_product_plans_on_product_num_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -68,9 +101,15 @@ ActiveRecord::Schema.define(version: 2023_07_19_105336) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "material_buys", "count_days"
+  add_foreign_key "material_buys", "material_nums"
   add_foreign_key "material_counts", "count_days"
   add_foreign_key "material_counts", "material_nums"
+  add_foreign_key "material_plans", "count_days"
+  add_foreign_key "material_plans", "material_nums"
   add_foreign_key "product_counts", "count_days"
   add_foreign_key "product_counts", "product_nums"
   add_foreign_key "product_nums", "material_nums"
+  add_foreign_key "product_plans", "count_days"
+  add_foreign_key "product_plans", "product_nums"
 end

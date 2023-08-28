@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   resources :count_days, only:[:index, :new, :create, :show, :edit, :update, :destroy] do
     resources :material_counts, only:[:new, :create]
     resources :product_counts, only:[:new, :create]
+    resources :material_plans, only:[:new, :create]
+    resources :product_plans, only:[:new, :create]
+    resources :material_buys, only:[:new, :create]
   end
 
 end

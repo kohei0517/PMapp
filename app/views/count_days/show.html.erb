@@ -13,8 +13,199 @@
   <%= link_to "製品生産計画登録", new_count_day_product_plan_path(@count_day.id) %>
 </div>
 <div>
-  <%= link_to "到着材料の登録", new_count_day_material_buy_path(@count_day.id) %>
+  <% link_to "到着材料の登録", new_count_day_material_buy_path(@count_day.id) %>
 </div>
 <div>
-  <%= @count_day.inventory_day %>
+  <% link_to "生産製品の登録", new_count_day_product_make_path(@count_day.id) %>
+</div>
+<div>
+  <%= link_to "発注製品の登録", new_count_day_export_plan_path(@count_day.id) %>
+</div>
+<div>
+  <%= @count_day.inventory_day %>以降の計画
+</div>
+
+<div class = "genle" >
+  <div class = "materialbuy" >
+    <%= "材料購入欄" %>
+  </div>
+  <div class = "materialcount" >
+    <%= "材料在庫" %>
+  </div>
+  <div class = "productplan" >
+    <%= "生産計画" %>
+  </div>
+  <div class = "productcount">
+    <%= "製品在庫" %>
+  </div>
+  <div class = "export">
+    <%= "発注予定" %>
+  </div>
+</div>
+  <%# 各材料についての棚卸しデータを参照する %>
+  <% @material_num.each do |materialnum| %>
+    <% dates = @count_day.inventory_day %>
+    <div class = "productmanu" >
+      <%= materialnum.name %>
+
+      <%# 材料を親に持つ製品を表示 %>
+      <% material_product = [] %>
+      <% mpcountlist = 0 %>
+      <% @product_num.each do |productnum| %>
+        <% if productnum.material_num_id == materialnum.id %>
+          <% material_product << productnum %>
+          <% mpcountlist += 1 %>
+        <% end %>
+      <% end %>
+      <%# 棚卸し在庫を確認する用の配列を作成。 %>
+      <% if mpcountlist != 0 %>
+        <% productcount = Array.new(mpcountlist) %>
+      <% else %>
+        <% productcount = Array.new(1) %>
+      <% end %>
+
+
+        <%# 材料在庫数の確認 %>
+        <% materialcount = 0 %>
+        <% @material_count.each do |mcount| %>
+          <% if mcount.material_num_id = materialnum.id %>
+            <% materialcount = mcount.count %>
+          <% end %>
+        <% end %>
+
+        <%# 製品在庫数の確認 %>
+
+        <div class = "datecount">
+        <% productcountcell = [] %>
+        <%# 親材料があるときのみの処理 %>
+        <% if material_product != [] %>
+          <% material_product.each do |mpcheck| %>
+            <% productcount[0] = 0 %>
+            <% @product_count.each do |pcount| %>
+              <% if pcount.product_num_id == mpcheck.id %>
+                <% productcountcell << pcount %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%# 親材料がないときは製品在庫0だけ送る  %>
+        <% else %>
+          <% productcount[0] = 0 %>
+        <% end %>
+
+        <% j = 1 %>
+
+        <% mplistnameflag = 0 %>
+        <% productcountflag = 0 %>
+
+        <%# 30日分の移動 %>
+        <% 30.times.each do %>
+          <%# 材料購入計画のこの日の購入数を記入。なければ0 %>
+        <% buyplancount = 0 %>
+        <% @material_plan.each do |material| %>
+          <% if material.buy_day == dates && material.material_num_id == materialnum.id %>
+            <% buyplancount = material.count %>
+          <% end %>
+        <% end %>
+
+
+      <%# 日付の記入 %>
+      <div class = "count_day" >
+        <%= dates %>
+
+      <%# 親材料に対する子材料の入力 %>
+      <div class = "material_product" >
+      <% productplanmaterialcount = 0 %>
+        <%# 製品在庫についての管理用変数を作成。iで記入。 %>
+          <% i = 0 %>
+      <%# 子製品があるものについて %>
+        <% if material_product != [] %>
+          <% material_product.each do |mplist| %>
+            
+            <div class = "titlearea">
+              <%# 製品ごとに名前の行を作成 %>
+              <% if mplistnameflag == 0 %>
+                <%= mplist.name %>
+              <% elsif mplistnameflag != 0 %>
+                <%= " " %>
+              <% end %>
+            </div>
+            <%# 生産計画のこの日の生産予定数を記入。なければ0。情報はproductplancountにその材料の生産数、productplanmaterialcountにその日の合計の材料仕様数を記入 %>
+            <% productplancount = 0 %>
+            <% productplanmaterialcount = 0 %>
+            <% @product_plan.each do |product| %>
+              <% if product.product_day == dates && product.product_num_id == mplist.id  %>
+                <% productplancount = product.count %>
+                <% productplanmaterialcount = productplancount / product.product_num.material_count %>
+              <% end %>
+            <% end %>
+
+            <%# 発注のこの日の発注数を記入。なければ0。情報はexportplancountに記入%>
+            <% exportplancount = 0 %>
+            <% @export_plan.each do |export| %>
+              <% if export.export_day == dates && export.product_num_id == mplist.id %>
+                <% exportplancount = export.count %>
+              <% end %>
+            <% end %>
+
+            <%# この完成品の初期在庫を持ってくる。在庫数はproductcountで出力 %>
+            <% if j <= mpcountlist %>
+              <% productcount[i] = 0 %>
+              <% productcountcell.each do |pdccell| %>
+                <% if pdccell.id == mplist.id %>
+                  <% productcount[i] = pdccell.count %>
+                  <% productcountflag = 1 %>
+                <% end %>
+              <% end %>
+              <% j += 1 %>
+            <% end %>
+
+            <%# 出荷製品情報 %>
+            <div class = "export" >
+              <% if exportplancount != 0 %>
+                <%= exportplancount %>
+              <% end %>
+            </div>
+
+            <%# 完成品在庫 %>
+            <div class = "productcount">
+              <% productcount[i] = productcount[i] + productplancount - exportplancount %>
+              <%= productcount[i] %>
+            </div>
+
+            <%# 生産計画の入力箇所 %>
+            <div class = "productplan" >
+            <% if productplancount != 0 %>
+              <%= productplancount %>
+            <% end %>
+           </div>
+            
+            <%# 製品が同じ親材料で違う製品を保つ場合の処理の追加 %>
+            <% i += 1 %>
+
+          <% end %>
+        <% end %>
+      <%# 翌日に移動 %>
+      
+        
+      <%# 材料在庫情報 %>
+      <div class = "materialcount" >
+        <% materialcount = materialcount + buyplancount - productplanmaterialcount  %>
+        <%= materialcount %>
+      </div>
+      
+        <%# 材料購入計画の情報を表示 %>
+        <div class = "materialbuy"> 
+          <% if buyplancount != 0 %>
+            <%= buyplancount %>
+          <% end %>
+        </div>
+
+      </div>
+        <% dates += 1 %>
+      </div>
+    <% end %>
+
+    </div>
+    <br>
+  <% end %>
 </div>

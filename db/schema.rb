@@ -10,13 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_22_120607) do
+ActiveRecord::Schema.define(version: 2023_09_06_115927) do
 
   create_table "count_days", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.date "inventory_day"
     t.integer "inventory_finish"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "export_plans", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.date "export_day", null: false
+    t.integer "count", null: false
+    t.bigint "count_day_id", null: false
+    t.bigint "product_num_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["count_day_id"], name: "index_export_plans_on_count_day_id"
+    t.index ["product_num_id"], name: "index_export_plans_on_product_num_id"
   end
 
   create_table "material_buys", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -68,6 +79,18 @@ ActiveRecord::Schema.define(version: 2023_08_22_120607) do
     t.index ["product_num_id"], name: "index_product_counts_on_product_num_id"
   end
 
+  create_table "product_makes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.date "product_day", null: false
+    t.integer "count", null: false
+    t.integer "miss", null: false
+    t.bigint "count_day_id", null: false
+    t.bigint "product_num_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["count_day_id"], name: "index_product_makes_on_count_day_id"
+    t.index ["product_num_id"], name: "index_product_makes_on_product_num_id"
+  end
+
   create_table "product_nums", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "product_number", null: false
     t.string "name", null: false
@@ -101,6 +124,8 @@ ActiveRecord::Schema.define(version: 2023_08_22_120607) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "export_plans", "count_days"
+  add_foreign_key "export_plans", "product_nums"
   add_foreign_key "material_buys", "count_days"
   add_foreign_key "material_buys", "material_nums"
   add_foreign_key "material_counts", "count_days"
@@ -109,6 +134,8 @@ ActiveRecord::Schema.define(version: 2023_08_22_120607) do
   add_foreign_key "material_plans", "material_nums"
   add_foreign_key "product_counts", "count_days"
   add_foreign_key "product_counts", "product_nums"
+  add_foreign_key "product_makes", "count_days"
+  add_foreign_key "product_makes", "product_nums"
   add_foreign_key "product_nums", "material_nums"
   add_foreign_key "product_plans", "count_days"
   add_foreign_key "product_plans", "product_nums"

@@ -5,6 +5,7 @@ class CountDay < ApplicationRecord
   has_many :material_plans, dependent: :destroy
   has_many :product_plans, dependent: :destroy
   has_many :material_buys, dependent: :destroy
+  has_many :export_plans,  dependent: :destroy
 
   validates :inventory_day, presence: true
   validates :inventory_finish, presence: true

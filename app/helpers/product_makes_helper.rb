@@ -1,0 +1,2 @@
+module ProductMakesHelper
+end

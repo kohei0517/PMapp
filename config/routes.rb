@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :material_plans, only:[:new, :create]
     resources :product_plans, only:[:new, :create]
     resources :material_buys, only:[:new, :create]
+    resources :product_makes, only:[:new, :create]
+    resources :export_plans, only:[:new, :create]
   end
 
 end

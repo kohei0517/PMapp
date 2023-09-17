@@ -17,7 +17,14 @@ class CountDaysController < ApplicationController
   end
 
   def show
+    @material_num = MaterialNum.all
+    @product_num = ProductNum.all
     @count_day = CountDay.find(params[:id])
+    @material_plan = @count_day.material_plans
+    @product_plan = @count_day.product_plans
+    @material_count = @count_day.material_counts
+    @product_count = @count_day.product_counts
+    @export_plan = @count_day.export_plans
   end
 
   def edit

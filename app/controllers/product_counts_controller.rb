@@ -1,4 +1,6 @@
 class ProductCountsController < ApplicationController
+
+
   def new
     @count_day = CountDay.find(params[:count_day_id])
     @product_counts = ProductCount.all

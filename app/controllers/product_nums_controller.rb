@@ -1,4 +1,6 @@
 class ProductNumsController < ApplicationController
+
+
   def new
     @product_num = ProductNum.new
   end

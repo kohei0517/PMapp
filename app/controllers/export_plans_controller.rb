@@ -1,4 +1,6 @@
 class ExportPlansController < ApplicationController
+
+
   def new
     @count_day = CountDay.find(params[:count_day_id])
     @export_plan = ExportPlan.new

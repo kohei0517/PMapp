@@ -1,4 +1,6 @@
 class MaterialPlansController < ApplicationController
+
+
   def new
     @count_day = CountDay.find(params[:count_day_id])
     @material_plan = MaterialPlan.new

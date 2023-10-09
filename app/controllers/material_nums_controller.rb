@@ -1,5 +1,6 @@
 class MaterialNumsController < ApplicationController
 
+
   def index
     @material_num = MaterialNum.all
     @product_num = ProductNum.all

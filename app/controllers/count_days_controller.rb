@@ -1,4 +1,6 @@
 class CountDaysController < ApplicationController
+
+  
   def index
     @count_days = CountDay.all
   end
